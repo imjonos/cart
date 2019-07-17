@@ -7,7 +7,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use CodersStudio\Cart\Models\Item;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 $factory->define(Item::class, function (Faker $faker) {
