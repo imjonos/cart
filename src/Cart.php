@@ -60,4 +60,15 @@ class Cart
     {
         return session("cart", collect([]));
     }
+
+    /**
+     * Remove item from cart
+     * @param int $id item id
+     */
+    public function remove(int $id):void
+    {
+        $cartCollection = session("cart", collect([]));
+        $cartCollectionResult = $cartCollection->forget($id);
+        session(['cart' => $cartCollectionResult]);
+    }
 }

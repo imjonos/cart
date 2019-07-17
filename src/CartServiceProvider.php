@@ -8,6 +8,7 @@
 namespace CodersStudio\Cart;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
 class CartServiceProvider extends ServiceProvider
 {
@@ -20,8 +21,9 @@ class CartServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'codersstudio');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->registerEloquentFactoriesFrom(__DIR__ . '/../database/factories');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -83,5 +85,17 @@ class CartServiceProvider extends ServiceProvider
 
         // Registering package commands.
         // $this->commands([]);
+    }
+
+    /**
+     * Register factories.
+     *
+     * @param string $path
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function registerEloquentFactoriesFrom($path):void
+    {
+        $this->app->make(EloquentFactory::class)->load($path);
     }
 }
