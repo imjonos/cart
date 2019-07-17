@@ -10,4 +10,5 @@ Route::namespace('CodersStudio\Cart\Http\Controllers')->group(function () {
     Route::get('/cart', 'CartController@index');
     Route::post('/cart', 'CartController@store');
     Route::delete('/cart/{item}', 'CartController@destroy');
+    Route::delete('/cart', 'CartController@clear');
 });

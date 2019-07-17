@@ -9,7 +9,7 @@ namespace CodersStudio\Cart\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class StoreRequest
+ * Class IndexRequest
  * @package CodersStudio\Cart
  */
 class IndexRequest extends FormRequest

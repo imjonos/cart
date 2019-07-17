@@ -46,9 +46,9 @@ class Cart
                 return $result;
             });
         }
-        else
+        else {
             $cartCollection->put($id, $productCollection);
-
+        }
         session(['cart' => $cartCollection]);
     }
 
@@ -70,5 +70,13 @@ class Cart
         $cartCollection = session("cart", collect([]));
         $cartCollectionResult = $cartCollection->forget($id);
         session(['cart' => $cartCollectionResult]);
+    }
+
+    /**
+     * Remove all items from cart
+     */
+    public function clear():void
+    {
+        session(["cart" => collect([])]);
     }
 }

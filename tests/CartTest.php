@@ -74,6 +74,27 @@ class CartTest extends TestCase
         ]);
     }
 
+
+    /**
+     * Test remove all items from cart
+     *
+     * @return void
+     */
+    public function testClear()
+    {
+        factory(Item::class, 10)->create();
+        $this->addProduct(1);
+        $this->addProduct(2);
+        $this->addProduct(3);
+        $response = $this->json('delete', '/cart');
+        $response->assertStatus(204);
+        $response = $this->get('/cart');
+        $response->assertStatus(200);
+        $response->assertJson([
+            "data" => []
+        ]);
+    }
+
     /**
      * Add test product to cart
      * @param int $id

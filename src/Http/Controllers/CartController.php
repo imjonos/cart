@@ -15,6 +15,7 @@ use CodersStudio\Cart\Facades\Cart;
 use CodersStudio\Cart\Http\Requests\StoreRequest;
 use CodersStudio\Cart\Http\Requests\IndexRequest;
 use CodersStudio\Cart\Http\Requests\DestroyRequest;
+use CodersStudio\Cart\Http\Requests\ClearRequest;
 use CodersStudio\Cart\Http\Resources\ItemsResource;
 
 class CartController extends Controller
@@ -62,6 +63,16 @@ class CartController extends Controller
     public function destroy(DestroyRequest $request, int $item)
     {
         Cart::remove($item);
+        return response()->json([],204);
+    }
+
+    /*
+   * Remove all items from cart
+   * @param DestroyRequest $request
+   */
+    public function clear(ClearRequest $request)
+    {
+        Cart::clear();
         return response()->json([],204);
     }
 

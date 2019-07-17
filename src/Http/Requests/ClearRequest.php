@@ -9,10 +9,10 @@ namespace CodersStudio\Cart\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class DestroyRequest
+ * Class ClearRequest
  * @package CodersStudio\Cart
  */
-class DestroyRequest extends FormRequest
+class ClearRequest extends FormRequest
 {
     /**
      * authorize
