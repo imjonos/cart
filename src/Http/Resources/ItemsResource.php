@@ -22,6 +22,10 @@ class ItemsResource extends ResourceCollection
     public function toArray($request)
     {
         return [
+            'meta' => [
+                'count' => $this->collection->count(),
+                'total' => $this->collection->sum('price')
+            ],
             'data' => ItemResource::collection($this->collection),
         ];
     }
