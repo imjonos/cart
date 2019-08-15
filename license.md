@@ -1,5 +1,7 @@
 # The license
 
-Copyright (c) author name <author email>
+Copyright (c) Coders Studio name info@coders.studio
 
-...Add your license text here...
+Only for Coders Studio projects
+Non open source
+Non free 
