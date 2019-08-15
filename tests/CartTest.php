@@ -130,6 +130,4 @@ class CartTest extends TestCase
         $user->id = 1;
         $this->be($user);
     }
-
-
 }
