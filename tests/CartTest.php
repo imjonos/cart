@@ -41,6 +41,7 @@ class CartTest extends TestCase
             "data" => [
                 [
                     "type"=> "items",
+                    "id" => 1,
                     "attributes"=> [
                         "params" => [
                             "image_path" => "/test"
