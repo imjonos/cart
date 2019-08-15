@@ -25,6 +25,7 @@ class CartTest extends TestCase
      */
     public function testIndex():void
     {
+        Item::truncate();
         factory(Item::class, 10)->create();
         $this->addProduct(1);
         $this->addProduct(2);
@@ -33,11 +34,18 @@ class CartTest extends TestCase
         $response = $this->get('/cart');
         $response->assertStatus(200);
         $response->assertJson([
+            "meta" => [
+                "count" => 3,
+                "total" => 30
+            ],
             "data" => [
                 [
                     "type"=> "items",
+                    "id" => 1,
                     "attributes"=> [
-                        "image_path" => "/test"
+                        "params" => [
+                            "image_path" => "/test"
+                        ]
                     ]
                 ]
             ]
@@ -51,8 +59,9 @@ class CartTest extends TestCase
      */
     public function testStore():void
     {
+        Item::truncate();
         factory(Item::class, 10)->create();
-        $response = $this->addProduct();
+        $response = $this->addProduct(1);
         $response->assertStatus(204);
     }
 
@@ -63,6 +72,7 @@ class CartTest extends TestCase
      */
     public function testDestroy()
     {
+        Item::truncate();
         factory(Item::class, 10)->create();
         $this->addProduct(1);
         $response = $this->json('delete', '/cart/1');
@@ -82,6 +92,7 @@ class CartTest extends TestCase
      */
     public function testClear()
     {
+        Item::truncate();
         factory(Item::class, 10)->create();
         $this->addProduct(1);
         $this->addProduct(2);
@@ -120,6 +131,4 @@ class CartTest extends TestCase
         $user->id = 1;
         $this->be($user);
     }
-
-
 }
