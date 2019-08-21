@@ -12,7 +12,10 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use CodersStudio\Cart\Facades\Cart;
-use CodersStudio\Cart\Http\Requests\StoreRequest;
+use CodersStudio\Cart\Http\Requests\{
+    StoreRequest,
+    UpdateRequest
+};
 use CodersStudio\Cart\Http\Requests\IndexRequest;
 use CodersStudio\Cart\Http\Requests\DestroyRequest;
 use CodersStudio\Cart\Http\Requests\ClearRequest;
@@ -52,6 +55,30 @@ class CartController extends Controller
         $params = $item->getParams();
 
         Cart::add($id, $name, $price, $quantity, $params);
+        return response()->json([],204);
+    }
+
+
+    /*
+     * Update product in the cart
+     * @param UpdateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(UpdateRequest $request)
+    {
+        $id = $request->get("item_id");
+        $quantity = $request->get("quantity");
+        $item = $this->getModel()::findOrFail($id);
+        $name = $item->getName();
+        $price = $item->getPrice();
+        $params = $item->getParams();
+
+        if($request->has('params')) {
+            $customParams = $request->get('params');
+            $params = collect($params)->merge($customParams)->toArray();
+        }
+
+        Cart::update($id, $name, $price, $quantity, $params);
         return response()->json([],204);
     }
 

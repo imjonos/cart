@@ -53,6 +53,30 @@ class Cart
     }
 
     /**
+     * Update product in the Cart
+     * @param int $id
+     * @param string $name
+     * @param float $price
+     * @param int $quantity
+     * @param array $params
+     * @return void
+     */
+    public function update(int $id, string $name, float $price = 0, int $quantity = 1, array $params = []):void
+    {
+        $productCollection = collect([
+            "id" => $id,
+            "name" => $name,
+            "price" => $price,
+            "quantity" => $quantity,
+            "params" => $params
+        ]);
+
+        $cartCollection = session("cart", collect([]));
+        $cartCollection->put($id, $productCollection);
+        session(['cart' => $cartCollection]);
+    }
+
+    /**
      * Get list of items
      * @return Collection
      */
