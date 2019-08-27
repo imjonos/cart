@@ -65,6 +65,38 @@ class CartTest extends TestCase
         $response->assertStatus(204);
     }
 
+    public function testUpdate():void
+    {
+        Item::truncate();
+        factory(Item::class)->create();
+        $response = $this->addProduct(1);
+        $response->assertStatus(204);
+
+        $response = $this->put('/cart', [
+            'item_id' => 1,
+            'quantity' => 225,
+            'params' => [
+                'testParam' => 777
+            ]
+        ]);
+        $response->assertStatus(204);
+
+        $response = $this->get('/cart');
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'quantity' => 225,
+                        'params' => [
+                            'testParam' => 777
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+    }
+
     /**
      * Test remove from cart
      *
