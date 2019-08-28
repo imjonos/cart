@@ -12,4 +12,9 @@ Route::namespace('CodersStudio\Cart\Http\Controllers')->middleware('web')->group
     Route::post('/cart', 'CartController@store');
     Route::delete('/cart/{item}', 'CartController@destroy');
     Route::delete('/cart', 'CartController@clear');
+
+    Route::get('/checkout', 'CheckoutController@checkout');
+    Route::post('/checkout', 'CheckoutController@checkout');
+    Route::get('/checkout/success/{payment_method_id}', 'CheckoutController@success')->name('checkout.success');
+    Route::get('/checkout/fail/{payment_method_id}', 'CheckoutController@fail')->name('checkout.fail');
 });
