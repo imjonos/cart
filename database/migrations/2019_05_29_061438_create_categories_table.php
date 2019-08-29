@@ -1,11 +1,17 @@
 <?php
+/**
+ * CodersStudio 2019
+ * https://coders.studio
+ * info@coders.studio
+ *
+ */
 
-use CodersStudio\Cart\Models\PaymentMethod;
+use CodersStudio\Cart\Models\Category;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentMethodsTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,20 +20,15 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamps();
         });
 
-        PaymentMethod::insert([
-            [
-                'name' => 'card'
-            ],
-            [
-                'name' => 'paypal'
-            ],
-        ]);
+        $category = new Category();
+        $category->name = 'test category';
+        $category->save();
     }
 
     /**
@@ -37,6 +38,6 @@ class CreatePaymentMethodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('categories');
     }
 }

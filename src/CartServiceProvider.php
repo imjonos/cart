@@ -7,6 +7,10 @@
 
 namespace CodersStudio\Cart;
 
+use CodersStudio\Cart\Drivers\CreditCardPaymentDriver;
+use CodersStudio\Cart\Drivers\PaypalPaymentDriver;
+use CodersStudio\Cart\Interfaces\PaymentDriver;
+use CodersStudio\Cart\Models\PaymentMethod;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
@@ -44,6 +48,24 @@ class CartServiceProvider extends ServiceProvider
         $this->app->singleton('cart', function ($app) {
             return new Cart;
         });
+
+
+        // register payment driver
+        $this->app->singleton(PaymentDriver::class, function($app) {
+            $request = request();
+            if($request->has('payment_method_id')) {
+                $pm = PaymentMethod::findOrFail($request->get('payment_method_id'));
+                switch ($pm->name) {
+                    case 'paypal':
+                        return new PaypalPaymentDriver();
+                        break;
+                    case 'card':
+                        return new CreditCardPaymentDriver();
+                        break;
+                }
+            }
+
+        });
     }
 
     /**
@@ -55,7 +77,7 @@ class CartServiceProvider extends ServiceProvider
     {
         return ['cart'];
     }
-    
+
     /**
      * Console-specific booting.
      *

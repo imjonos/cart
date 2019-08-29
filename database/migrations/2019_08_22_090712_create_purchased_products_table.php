@@ -23,10 +23,7 @@ class CreatePurchasedProductsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('purchase_id');
-            $table->json('fields');
-
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('product_id')
                 ->references('id')
@@ -36,6 +33,14 @@ class CreatePurchasedProductsTable extends Migration
                 ->references('id')
                 ->on('purchases')
                 ->onDelete('cascade');
+
+
+            $table->string('title');
+            $table->string('category');
+            $table->unsignedBigInteger('sales_count')->default(0);
+            $table->decimal('price', 10, 2)->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

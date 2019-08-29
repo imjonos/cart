@@ -8,6 +8,8 @@
 
 namespace CodersStudio\Cart\Models;
 
+use App\User;
+use CodersStudio\Cart\Traits\Castable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,26 +20,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Product extends Model
 {
+    use Castable;
+
+    protected $castableRelations = [
+        [
+            'method' => 'category',
+            'field' => 'name'
+        ],
+    ];
+
     protected $fillable = [
         'title',
         'user_id',
-        'productable_type',
-        'productable_id',
-        'usage_id',
-        'description',
-        'city',
-        'location',
-        'camera_program',
-        'be_first',
-        'extra',
-        'comment',
-        'on_sale',
-        'approved',
-        'country_id',
         'category_id',
         'sales_count',
-        'be_first_active_at',
         'price',
-        'actors',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

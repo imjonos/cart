@@ -17,6 +17,7 @@ use CodersStudio\Cart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use mysql_xdevapi\Exception;
+use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller
 {
@@ -71,13 +72,12 @@ class CheckoutController extends Controller
                 $cart->map(function($cartItem) use ($purchase, &$totalPrice) {
                     $params = $cartItem->get('params');
                     $product = config('cart.product_model')::findOrFail($params['id']);
-                    $fields = json_encode($product->toArray());
+                    $fields = collect($product->castModel());
 
-                    PurchasedProduct::create([
+                    config('cart.purchased_product_model')::create($fields->merge([
                         'product_id' => $product->id,
                         'purchase_id' => $purchase->id,
-                        'fields' => $fields,
-                    ]);
+                    ])->toArray());
                     $totalPrice += $params['price'];
                 });
 
