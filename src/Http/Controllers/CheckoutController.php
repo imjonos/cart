@@ -77,7 +77,7 @@ class CheckoutController extends Controller
                     config('cart.purchased_product_model')::create($fields->merge([
                         'product_id' => $product->id,
                         'purchase_id' => $purchase->id,
-                    ])->toArray());
+                    ])->merge($params['extraFields'])->toArray());
                     $totalPrice += $params['price'];
                 });
 

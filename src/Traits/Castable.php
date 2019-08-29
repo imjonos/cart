@@ -39,8 +39,6 @@ trait Castable
             }
         }
 
-        dd($fields);
-
         return $fields;
     }
 }

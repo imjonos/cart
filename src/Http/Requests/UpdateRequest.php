@@ -30,7 +30,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'item_id' => 'required|integer',
-            'quantity' => 'integer'
+            'name' => 'string|max:255',
+            'price' => 'numeric',
+            'quantity' => 'integer',
         ];
     }
 }

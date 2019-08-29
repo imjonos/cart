@@ -54,6 +54,6 @@ class CheckoutTest extends TestCase
         $this->assertEquals(1, Purchase::first()->status_id);
 
 
-        //dd($product->toArray(), ' to ' ,PurchasedProduct::get()->toArray());
+        dd($product->toArray(), ' to ' ,PurchasedProduct::get()->toArray());
     }
 }

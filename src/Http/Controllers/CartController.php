@@ -69,8 +69,8 @@ class CartController extends Controller
         $id = $request->get("item_id");
         $quantity = $request->get("quantity");
         $item = $this->getModel()::findOrFail($id);
-        $name = $item->getName();
-        $price = $item->getPrice();
+        $name = $request->get('name') ?? $item->getName();
+        $price = $request->get('price') ?? $item->getPrice();
         $params = $item->getParams();
 
         if($request->has('params')) {

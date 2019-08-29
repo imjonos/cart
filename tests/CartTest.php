@@ -75,6 +75,8 @@ class CartTest extends TestCase
         $response = $this->put('/cart', [
             'item_id' => 1,
             'quantity' => 225,
+            'name' => 'new name',
+            'price' => 123,
             'params' => [
                 'testParam' => 777
             ]
@@ -88,6 +90,8 @@ class CartTest extends TestCase
                     'id' => 1,
                     'attributes' => [
                         'quantity' => 225,
+                        'name' => 'new name',
+                        'price' => 1223,
                         'params' => [
                             'testParam' => 777
                         ]
