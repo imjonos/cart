@@ -18,7 +18,6 @@ class CreatePurchasesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->decimal('price', 10, 2)->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
-            $table->unsignedBigInteger('sales_count')->default(0);
 
             $table->timestamps();
             $table->softDeletes();
