@@ -9,6 +9,7 @@ namespace CodersStudio\Cart;
 
 use CodersStudio\Cart\Drivers\CreditCardPaymentDriver;
 use CodersStudio\Cart\Drivers\PaypalPaymentDriver;
+use CodersStudio\Cart\Http\Middleware\PaymentMethodMiddleware;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\PaymentMethod;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +34,10 @@ class CartServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
+
+        //Middleware
+        $router = $this->app['router'];
+        $router->pushMiddlewareToGroup('web', PaymentMethodMiddleware::class);
     }
 
     /**
