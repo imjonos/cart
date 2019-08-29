@@ -21,6 +21,6 @@ Route::namespace('CodersStudio\Cart\Http\Controllers')->middleware('web')->group
     Route::get('/checkout/fail/{payment_method_id}', 'CheckoutController@fail')->name('checkout.fail');
 
     // static pages
-    Route::get('/payment/success/{payment_method_id}', 'CheckoutController@successPage')->name('payment.success');
-    Route::get('/payment/fail/{payment_method_id}', 'CheckoutController@failPage')->name('payment.fail');
+    Route::get('/payment/success', 'CheckoutController@successPage')->name('payment.success');
+    Route::get('/payment/fail', 'CheckoutController@failPage')->name('payment.fail');
 });

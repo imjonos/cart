@@ -50,7 +50,7 @@ class CheckoutController extends Controller
      */
     public function successPage(Request $request)
     {
-        $purchase = Purchase::find($request->get('purchase_id'));
+        $purchase = Purchase::find($request->get('purchase_id')) ?? null;
         return view('checkout.success', [
             'purchase' => $purchase
         ]);

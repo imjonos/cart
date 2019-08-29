@@ -25,13 +25,21 @@ class CreditCardPaymentDriver implements PaymentDriver
         $status = request()->has('status') && request()->get('status') === 'true';
 
         if($status) {
-            $this->success();
+            file_get_contents(route('checkout.success', [
+                'payment_method_id' => $this->paymentMethod->id,
+                'purchase_id' => $purchase_id
+            ]));
+
             return response()->redirectTo(route('payment.success', [
                 'payment_method_id' => $this->paymentMethod->id,
                 'purchase_id' => $purchase_id
             ]));
         } else {
-            $this->fail();
+            file_get_contents(route('checkout.fail', [
+                'payment_method_id' => $this->paymentMethod->id,
+                'purchase_id' => $purchase_id
+            ]));
+
             return response()->redirectTo(route('payment.fail', [
                 'payment_method_id' => $this->paymentMethod->id,
             ]));
