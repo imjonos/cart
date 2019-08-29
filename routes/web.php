@@ -15,6 +15,12 @@ Route::namespace('CodersStudio\Cart\Http\Controllers')->middleware('web')->group
 
     Route::get('/checkout', 'CheckoutController@checkout');
     Route::post('/checkout', 'CheckoutController@checkout');
+
+    // callback handlers
     Route::get('/checkout/success/{payment_method_id}', 'CheckoutController@success')->name('checkout.success');
     Route::get('/checkout/fail/{payment_method_id}', 'CheckoutController@fail')->name('checkout.fail');
+
+    // static pages
+    Route::get('/payment/success/{payment_method_id}', 'CheckoutController@successPage')->name('payment.success');
+    Route::get('/payment/fail/{payment_method_id}', 'CheckoutController@failPage')->name('payment.fail');
 });

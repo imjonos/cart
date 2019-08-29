@@ -22,7 +22,7 @@ use App\Http\Controllers\Controller;
 class CheckoutController extends Controller
 {
     /**
-     * Success page after payment
+     * Success payment handler
      *
      * @param Request $request
      * @param PaymentDriver $driver
@@ -31,17 +31,38 @@ class CheckoutController extends Controller
     public function success(PaymentDriver $driver)
     {
         $purchase = $driver->success();
-        return view('checkout.success', ['purchase' => $purchase]);
     }
 
     /**
-     * Fail payment page
+     * Fail payment handler
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function fail(PaymentDriver $driver)
     {
         $driver->fail();
+    }
+
+    /**
+     * Static success page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function successPage(Request $request)
+    {
+        $purchase = Purchase::find($request->get('purchase_id'));
+        return view('checkout.success', [
+            'purchase' => $purchase
+        ]);
+    }
+
+    /**
+     * Static fail page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function failPage()
+    {
         return view('checkout.fail');
     }
 
@@ -104,6 +125,8 @@ class CheckoutController extends Controller
                 return $driver->redirect($purchase->id);
             }
 
+        } else {
+            abort(422);
         }
     }
 }

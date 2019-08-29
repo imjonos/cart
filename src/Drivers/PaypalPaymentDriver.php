@@ -23,17 +23,18 @@ class PaypalPaymentDriver implements PaymentDriver
 
     public function redirect($purchase_id)
     {
-        $status = request()->has('status') && request()->get('status');
+        $status = request()->has('status') && request()->get('status') === 'true';
 
         if($status) {
-            return response()->redirectTo(route('checkout.success', [
+            $this->success();
+            return response()->redirectTo(route('payment.success', [
                 'payment_method_id' => $this->paymentMethod->id,
                 'purchase_id' => $purchase_id
             ]));
         } else {
-            return response()->redirectTo(route('checkout.fail', [
+            $this->fail();
+            return response()->redirectTo(route('payment.fail', [
                 'payment_method_id' => $this->paymentMethod->id,
-                'purchase_id' => $purchase_id
             ]));
         }
 
