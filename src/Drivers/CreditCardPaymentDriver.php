@@ -29,9 +29,7 @@ class CreditCardPaymentDriver implements PaymentDriver
                 'payment_method_id' => $this->paymentMethod->id,
                 'purchase_id' => $purchase_id
             ]));
-
             return response()->redirectTo(route('payment.success', [
-                'payment_method_id' => $this->paymentMethod->id,
                 'purchase_id' => $purchase_id
             ]));
         } else {
@@ -39,10 +37,7 @@ class CreditCardPaymentDriver implements PaymentDriver
                 'payment_method_id' => $this->paymentMethod->id,
                 'purchase_id' => $purchase_id
             ]));
-
-            return response()->redirectTo(route('payment.fail', [
-                'payment_method_id' => $this->paymentMethod->id,
-            ]));
+            return response()->redirectTo(route('payment.fail'));
         }
 
 

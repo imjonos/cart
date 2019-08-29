@@ -10,13 +10,10 @@ namespace CodersStudio\Cart\Http\Controllers;
 
 use CodersStudio\Cart\Http\Requests\Checkout\CheckoutRequest;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
-use CodersStudio\Cart\Models\Product;
 use CodersStudio\Cart\Models\Purchase;
-use CodersStudio\Cart\Models\PurchasedProduct;
 use CodersStudio\Cart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use mysql_xdevapi\Exception;
 use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller
@@ -124,9 +121,12 @@ class CheckoutController extends Controller
             } else {
                 return $driver->redirect($purchase->id);
             }
-
         } else {
-            abort(422);
+            if($request->ajax()) {
+                return response()->json(null, 422);
+            } else {
+                return redirect()->back();
+            }
         }
     }
 }
