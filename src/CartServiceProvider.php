@@ -7,8 +7,6 @@
 
 namespace CodersStudio\Cart;
 
-use CodersStudio\Cart\Drivers\CreditCardPaymentDriver;
-use CodersStudio\Cart\Drivers\PaypalPaymentDriver;
 use CodersStudio\Cart\Http\Middleware\PaymentMethodMiddleware;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\PaymentMethod;
@@ -62,10 +60,12 @@ class CartServiceProvider extends ServiceProvider
                 $pm = PaymentMethod::findOrFail($request->get('payment_method_id'));
                 switch ($pm->name) {
                     case 'paypal':
-                        return new PaypalPaymentDriver();
+                        $driver = config('cart.drivers.paypal');
+                        return new $driver();
                         break;
                     case 'card':
-                        return new CreditCardPaymentDriver();
+                        $driver = config('cart.drivers.card');
+                        return new $driver();
                         break;
                 }
             }
