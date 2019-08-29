@@ -26,9 +26,10 @@ class CheckoutTest extends TestCase
         $session = [
             'cart' => collect([
                 1 => collect([
+                    'id' => 1,
+                    'price' => 555,
                     "params" => [
-                        'id' => 1,
-                        'price' => 100,
+                        'extraFields' => []
                     ],
                 ])
             ])

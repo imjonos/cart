@@ -71,14 +71,14 @@ class CheckoutController extends Controller
 
                 $cart->map(function($cartItem) use ($purchase, &$totalPrice) {
                     $params = $cartItem->get('params');
-                    $product = config('cart.product_model')::findOrFail($params['id']);
+                    $product = config('cart.product_model')::findOrFail($cartItem['id']);
                     $fields = collect($product->castModel());
 
                     config('cart.purchased_product_model')::create($fields->merge([
                         'product_id' => $product->id,
                         'purchase_id' => $purchase->id,
                     ])->merge($params['extraFields'])->toArray());
-                    $totalPrice += $params['price'];
+                    $totalPrice += $cartItem['price'];
                 });
 
                 $purchase->price = $totalPrice;
