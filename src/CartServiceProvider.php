@@ -24,6 +24,9 @@ class CartServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'codersstudio');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
+        if(app()->runningUnitTests()) {
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations/test');
+        }
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         $this->registerEloquentFactoriesFrom(__DIR__ . '/../database/factories');
@@ -36,6 +39,10 @@ class CartServiceProvider extends ServiceProvider
         //Middleware
         $router = $this->app['router'];
         $router->pushMiddlewareToGroup('web', PaymentMethodMiddleware::class);
+
+
+        // check db for payment methods
+        $this->checkDbForPaymentMethods();
     }
 
     /**
@@ -53,7 +60,6 @@ class CartServiceProvider extends ServiceProvider
         });
 
         // register payment driver
-        $this->checkDbForPaymentMethods();
         $this->app->singleton(PaymentDriver::class, function($app) {
             $request = request();
             if($request->has('payment_method_id') && ((int) $request->get('payment_method_id'))) {
@@ -92,6 +98,11 @@ class CartServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/cart.php' => config_path('cart.php'),
         ], 'cart.config');
+
+        // Migrations publish
+        $this->publishes([
+            __DIR__.'/../database/migrations' => base_path('database/migrations'),
+        ], 'cart.migrations');
 
         // Publishing the views.
         /*$this->publishes([
