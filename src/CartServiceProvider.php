@@ -138,7 +138,7 @@ class CartServiceProvider extends ServiceProvider
                 return $dbMethod->name === $configName;
             });
 
-            if ($searchCondition !== false) {
+            if ($searchCondition === false) {
                 // not found in db
                 PaymentMethod::create([
                     'name' => $configName
