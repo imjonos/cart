@@ -11,36 +11,37 @@ use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\PaymentMethod;
 use CodersStudio\Cart\Models\Purchase;
 
-
+/**
+ * Class PaypalPaymentDriver
+ * @package CodersStudio\Cart\Drivers
+ */
 class PaypalPaymentDriver implements PaymentDriver
 {
     public $paymentMethod;
 
+    /**
+     * PaypalPaymentDriver constructor.
+     */
     public function __construct()
     {
         $this->paymentMethod = PaymentMethod::where('name', 'paypal')->get()->first();
     }
 
+    /**
+     * Redirect to payment gateway after successful DB initialization
+     *
+     * @param $purchase_id
+     */
     public function redirect($purchase_id)
     {
-        $status = request()->has('status') && request()->get('status') === 'true';
-
-        if($status) {
-            file_get_contents(route('checkout.success', [
-                'payment_method_id' => $this->paymentMethod->id,
-                'purchase_id' => $purchase_id
-            ]));
-            return response()->redirectTo(route('payment.success', [
-                'purchase_id' => $purchase_id
-            ]));
-        } else {
-            file_get_contents(route('checkout.fail', [
-                'payment_method_id' => $this->paymentMethod->id,
-                'purchase_id' => $purchase_id
-            ]));
-            return response()->redirectTo(route('payment.fail'));
-        }
+        // redirect to payment system
     }
+
+    /**
+     * Success payment callback. Invoked by payment gateway after success payment
+     *
+     * @return mixed
+     */
     public function success()
     {
         $request = request();
@@ -48,20 +49,12 @@ class PaypalPaymentDriver implements PaymentDriver
         $purchase->status_id = 2;
         $purchase->save();
 
-        $purchase->purchasedProducts->map(function($productCast) {
-
-            $product = $productCast->product;
-            $product->sales_count++;
-            $product->sold_be_first = true;
-            $product->save();
-
-            $profile = $product->user->userSetting;
-            $profile->balance += $productCast->price;
-            $profile->save();
-        });
-
         return $purchase;
     }
+
+    /**
+     * Failed payment callback. Invoked by payment gateway after failed payment
+     */
     public function fail()
     {
         $request = request();

@@ -11,6 +11,10 @@ namespace CodersStudio\Cart\Models;
 use Illuminate\Database\Eloquent\Model;
 use CodersStudio\Cart\Models\Purchase;
 
+/**
+ * Class PurchaseStatus
+ * @package CodersStudio\Cart\Models
+ */
 class PurchaseStatus extends Model
 {
     public $fillable = ['name'];

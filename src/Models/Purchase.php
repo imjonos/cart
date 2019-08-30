@@ -13,7 +13,10 @@ use CodersStudio\Cart\Models\Product;
 use CodersStudio\CRUD\Traits\Crudable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
+/**
+ * Class Purchase
+ * @package CodersStudio\Cart\Models
+ */
 class Purchase extends Model
 {
     protected $fillable = [
@@ -31,7 +34,7 @@ class Purchase extends Model
      */
     public function purchasedProducts()
     {
-        return $this->hasMany('CodersStudio\Cart\Models\PurchasedProduct');
+        return $this->hasMany(config('cart.purchased_product_model'));
     }
 
     /**
@@ -39,7 +42,7 @@ class Purchase extends Model
      */
     public function user()
     {
-        return $this->belongsTo('CodersStudio\Cart\Models\User');
+        return $this->belongsTo('App\User');
     }
 
     /**

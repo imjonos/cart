@@ -57,19 +57,16 @@ class CartServiceProvider extends ServiceProvider
         $this->app->singleton(PaymentDriver::class, function($app) {
             $request = request();
             if($request->has('payment_method_id')) {
-                $pm = PaymentMethod::findOrFail($request->get('payment_method_id'));
-                switch ($pm->name) {
-                    case 'paypal':
-                        $driver = config('cart.drivers.paypal');
-                        return new $driver();
-                        break;
-                    case 'card':
-                        $driver = config('cart.drivers.card');
-                        return new $driver();
-                        break;
+                $paymentMethod = PaymentMethod::findOrFail($request->get('payment_method_id'));
+
+                if(count(config('cart.drivers'))) {
+                    foreach (config('cart.drivers') as $name => $driver) {
+                        if($paymentMethod->name === $name) {
+                            return new $driver();
+                        }
+                    }
                 }
             }
-
         });
     }
 

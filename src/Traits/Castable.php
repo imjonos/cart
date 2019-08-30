@@ -8,9 +8,20 @@
 
 namespace CodersStudio\Cart\Traits;
 
-
+/**
+ * Trait Castable
+ * @package CodersStudio\Cart\Traits
+ */
 trait Castable
 {
+    /**
+     * Cast fillable product attributes to fields, which can be used to mass create/update on casted product model
+     * Relation, which listed in $castableRelations will be casted by given field
+     * For example: category_id can be casted to category name
+     *
+     * @return \Illuminate\Support\Collection
+     * @throws \ReflectionException
+     */
     public function castModel()
     {
         // sanitize fields. only fillables accepted

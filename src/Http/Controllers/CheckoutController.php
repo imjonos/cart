@@ -16,32 +16,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+/**
+ * Class CheckoutController
+ * @package CodersStudio\Cart\Http\Controllers
+ */
 class CheckoutController extends Controller
 {
     /**
-     * Success payment handler
+     * Success payment handler. Invoked by payment gateway
      *
      * @param Request $request
      * @param PaymentDriver $driver
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function success(PaymentDriver $driver)
+    public function success(CheckoutRequest $request, PaymentDriver $driver)
     {
         $purchase = $driver->success();
     }
 
     /**
-     * Fail payment handler
+     * Fail payment handler. Invoked by payment gateway
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function fail(PaymentDriver $driver)
+    public function fail(CheckoutRequest $request, PaymentDriver $driver)
     {
         $driver->fail();
     }
 
     /**
-     * Static success page
+     * Static success page render
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -54,7 +58,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Static fail page
+     * Static fail page render
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -64,7 +68,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Checkout xhr. Used for preparing db before redirection to the payment service
+     * Prepare db and redirect to the payment service if not XHR
      *
      * @param CheckoutRequest $request
      * @param PaymentDriver $driver
