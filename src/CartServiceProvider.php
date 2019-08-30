@@ -53,13 +53,12 @@ class CartServiceProvider extends ServiceProvider
         });
 
         // register payment driver
+        $this->checkDbForPaymentMethods();
         $this->app->singleton(PaymentDriver::class, function($app) {
             $request = request();
             if($request->has('payment_method_id') && ((int) $request->get('payment_method_id'))) {
                 $paymentMethodId = (int) $request->get('payment_method_id');
                 $paymentMethod = PaymentMethod::findOrFail($paymentMethodId);
-
-                $this->checkDbForPaymentMethods();
 
                 if(count(config('cart.drivers'))) {
                     foreach (config('cart.drivers') as $name => $driver) {
