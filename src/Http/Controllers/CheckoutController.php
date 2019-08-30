@@ -29,7 +29,7 @@ class CheckoutController extends Controller
      * @param PaymentDriver $driver
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function success(CheckoutRequest $request, PaymentDriver $driver)
+    public function success(PaymentDriver $driver)
     {
         $purchase = $driver->success();
     }
@@ -39,7 +39,7 @@ class CheckoutController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function fail(CheckoutRequest $request, PaymentDriver $driver)
+    public function fail(PaymentDriver $driver)
     {
         $driver->fail();
     }
