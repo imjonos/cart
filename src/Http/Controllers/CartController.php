@@ -12,13 +12,14 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use CodersStudio\Cart\Facades\Cart;
-use CodersStudio\Cart\Http\Requests\{
+use CodersStudio\Cart\Http\Requests\Cart\{
     StoreRequest,
-    UpdateRequest
+    UpdateRequest,
+    IndexRequest,
+    DestroyRequest,
+    ClearRequest
 };
-use CodersStudio\Cart\Http\Requests\IndexRequest;
-use CodersStudio\Cart\Http\Requests\DestroyRequest;
-use CodersStudio\Cart\Http\Requests\ClearRequest;
+
 use CodersStudio\Cart\Http\Resources\ItemsResource;
 
 class CartController extends Controller

@@ -23,6 +23,18 @@ use App\Http\Controllers\Controller;
 class CheckoutController extends Controller
 {
     /**
+     * Product class
+     * @var
+     */
+    protected $productModel;
+
+    /**
+     * PurchasedProduct class
+     * @var
+     */
+    protected $purchasedProductModel;
+
+    /**
      * Success payment handler. Invoked by payment gateway
      *
      * @param Request $request
@@ -93,10 +105,12 @@ class CheckoutController extends Controller
 
                 $cart->map(function($cartItem) use ($purchase, &$totalPrice) {
                     $params = $cartItem->get('params');
-                    $product = config('cart.product_model')::findOrFail($cartItem['id']);
+                    $product = $this->getProductModel()::findOrFail($cartItem['id']);
+
+                    // cast product model
                     $fields = collect($product->castModel());
 
-                    config('cart.purchased_product_model')::create($fields->merge([
+                    $this->getPurchasedProductModel()::create($fields->merge([
                         'product_id' => $product->id,
                         'purchase_id' => $purchase->id,
                     ])->merge($params['extraFields'])->toArray());
@@ -117,11 +131,7 @@ class CheckoutController extends Controller
                     'purchase_id' => $purchase->id,
                     'payment_method_id' => $driver->paymentMethod->id,
                 ];
-                if($status) {
-                    return response()->json($jsonResponseData, 200);
-                } else {
-                    return response()->json($jsonResponseData, 422);
-                }
+                return response()->json($jsonResponseData, $status ? 200 : 422);
             } else {
                 return $driver->redirect($purchase->id);
             }
@@ -133,4 +143,29 @@ class CheckoutController extends Controller
             }
         }
     }
+
+    /**
+     * Get Product class name
+     * @return mixed
+     */
+    protected function getProductModel()
+    {
+        if(!$this->productModel){
+            $this->productModel = config('cart.product_model');
+        }
+        return $this->productModel;
+    }
+
+    /**
+     * Get PurchasedProduct class name
+     * @return mixed
+     */
+    protected function getPurchasedProductModel()
+    {
+        if(!$this->purchasedProductModel){
+            $this->purchasedProductModel = config('cart.purchased_product_model');
+        }
+        return $this->purchasedProductModel;
+    }
+
 }

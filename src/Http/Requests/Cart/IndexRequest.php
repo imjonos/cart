@@ -6,14 +6,14 @@
  *
  */
 
-namespace CodersStudio\Cart\Http\Requests;
+namespace CodersStudio\Cart\Http\Requests\Cart;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class UpdateRequest
+ * Class IndexRequest
  * @package CodersStudio\Cart
  */
-class UpdateRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     /**
      * authorize
@@ -29,10 +29,6 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_id' => 'required|integer',
-            'name' => 'string|max:255',
-            'price' => 'numeric',
-            'quantity' => 'integer',
         ];
     }
 }

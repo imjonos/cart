@@ -1,18 +1,19 @@
 <?php
 /**
  * CodersStudio 2019
- *  https://coders.studio
- *  info@coders.studio
+ * https://coders.studio
+ * info@coders.studio
+ *
  */
 
-namespace CodersStudio\Cart\Http\Requests;
+namespace CodersStudio\Cart\Http\Requests\Cart;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class StoreRequest
+ * Class UpdateRequest
  * @package CodersStudio\Cart
  */
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * authorize
@@ -29,7 +30,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'item_id' => 'required|integer',
-            'quantity' => 'integer'
+            'name' => 'string|max:255',
+            'price' => 'numeric',
+            'quantity' => 'integer',
         ];
     }
 }

@@ -52,12 +52,14 @@ class CartServiceProvider extends ServiceProvider
             return new Cart;
         });
 
-
         // register payment driver
         $this->app->singleton(PaymentDriver::class, function($app) {
             $request = request();
-            if($request->has('payment_method_id')) {
-                $paymentMethod = PaymentMethod::findOrFail($request->get('payment_method_id'));
+            if($request->has('payment_method_id') && ((int) $request->get('payment_method_id'))) {
+                $paymentMethodId = (int) $request->get('payment_method_id');
+                $paymentMethod = PaymentMethod::findOrFail($paymentMethodId);
+
+                $this->checkDbForPaymentMethods();
 
                 if(count(config('cart.drivers'))) {
                     foreach (config('cart.drivers') as $name => $driver) {
@@ -121,5 +123,27 @@ class CartServiceProvider extends ServiceProvider
     protected function registerEloquentFactoriesFrom($path):void
     {
         $this->app->make(EloquentFactory::class)->load($path);
+    }
+
+    /**
+     * Check database for payment methods
+     */
+    protected function checkDbForPaymentMethods()
+    {
+        $dbMethods = PaymentMethod::select('name')->get();
+        $configMethods = array_keys(config('cart.drivers'));
+
+        foreach ($configMethods as $configName) {
+            $searchCondition = $dbMethods->search(function ($dbMethod) use ($configName) {
+                return $dbMethod->name === $configName;
+            });
+
+            if ($searchCondition !== false) {
+                // not found in db
+                PaymentMethod::create([
+                    'name' => $configName
+                ]);
+            }
+        }
     }
 }

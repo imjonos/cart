@@ -1,18 +1,19 @@
 <?php
 /**
  * CodersStudio 2019
- *  https://coders.studio
- *  info@coders.studio
+ * https://coders.studio
+ * info@coders.studio
+ *
  */
 
-namespace CodersStudio\Cart\Http\Requests;
+namespace CodersStudio\Cart\Http\Requests\Cart;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class DestroyRequest
+ * Class ClearRequest
  * @package CodersStudio\Cart
  */
-class DestroyRequest extends FormRequest
+class ClearRequest extends FormRequest
 {
     /**
      * authorize
