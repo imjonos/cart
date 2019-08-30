@@ -12,6 +12,7 @@ use CodersStudio\Cart\Http\Requests\Checkout\CheckoutRequest;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\Purchase;
 use CodersStudio\Cart\Facades\Cart;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -44,6 +45,7 @@ class CheckoutController extends Controller
     public function success(PaymentDriver $driver)
     {
         $purchase = $driver->success();
+        return response(null, 200);
     }
 
     /**

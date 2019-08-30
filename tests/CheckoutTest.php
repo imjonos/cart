@@ -110,7 +110,8 @@ class CheckoutTest extends TestCase
 
         $response = $this->actingAs($user)
             ->withMiddleware('web')
-            ->ajax('get', '/checkout/success/1?purchase_id=1');
+            ->withSession([])
+            ->get('/checkout/success/1?purchase_id=1&payment_method_id=1');
 
         //dd(PaymentMethod::get());
 
