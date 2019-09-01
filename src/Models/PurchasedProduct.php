@@ -16,15 +16,24 @@ use CodersStudio\Cart\Models\{
 };
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Test example
+ * Class PurchasedProduct
+ * @package CodersStudio\Cart\Models
+ */
 class PurchasedProduct extends Model
 {
     protected $fillable = [
+        // auto copy from Product model
         'title',
         'user_id',
-        'category',
         'sales_count',
         'price',
 
+        // casted from category_id
+        'category',
+
+        // should not be modified
         'purchase_id',
         'product_id',
     ];
