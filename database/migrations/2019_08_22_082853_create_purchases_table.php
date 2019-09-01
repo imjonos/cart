@@ -18,12 +18,14 @@ class CreatePurchasesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->decimal('price', 10, 2)->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
+            $table->unsignedBigInteger('payment_method_id');
 
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('status_id')->references('id')->on('purchase_statuses');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods');
         });
     }
 

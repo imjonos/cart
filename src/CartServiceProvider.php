@@ -10,6 +10,7 @@ namespace CodersStudio\Cart;
 use CodersStudio\Cart\Http\Middleware\PaymentMethodMiddleware;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\PaymentMethod;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
@@ -17,11 +18,10 @@ use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 class CartServiceProvider extends ServiceProvider
 {
     /**
-     * Perform post-registration booting of services.
-     *
-     * @return void
+     * @param Router $router
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function boot()
+    public function boot(Router $router)
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'codersstudio');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
@@ -37,13 +37,6 @@ class CartServiceProvider extends ServiceProvider
             $this->bootForConsole();
         }
 
-        //Middleware
-        $router = $this->app['router'];
-        $router->pushMiddlewareToGroup('web', PaymentMethodMiddleware::class);
-
-
-        // check db for payment methods
-        $this->checkDbForPaymentMethods();
     }
 
     /**
@@ -63,11 +56,14 @@ class CartServiceProvider extends ServiceProvider
         // register payment driver
         $this->app->singleton(PaymentDriver::class, function($app) {
             $request = request();
-            if($request->has('payment_method_id') && ((int) $request->get('payment_method_id'))) {
-                $paymentMethodId = (int) $request->get('payment_method_id');
-                $paymentMethod = PaymentMethod::findOrFail($paymentMethodId);
+            $paymentMethod = $this->getPaymentMethod();
 
-                if(count(config('cart.drivers'))) {
+            // check db for payment methods
+            $this->checkDbForPaymentMethods();
+
+            if($paymentMethod) {
+                $paymentMethod = PaymentMethod::findOrFail($paymentMethod);
+                if(count(config('cart.drivers')) && $paymentMethod) {
                     foreach (config('cart.drivers') as $name => $driver) {
                         if($paymentMethod->name === $name) {
                             return new $driver();
@@ -139,7 +135,7 @@ class CartServiceProvider extends ServiceProvider
     /**
      * Check database for payment methods
      */
-    protected function checkDbForPaymentMethods()
+    protected function checkDbForPaymentMethods(): void
     {
         if(Schema::hasTable('payment_methods')) {
             $dbMethods = PaymentMethod::select('name')->get();
@@ -158,5 +154,23 @@ class CartServiceProvider extends ServiceProvider
                 }
             }
         }
+    }
+
+    /**
+     * Payment Method Initialization from request
+     * @return int
+     */
+    protected function getPaymentMethod(): int
+    {
+        $request = request();
+        $paymentMethod = 0;
+
+        if ($request->route()->named(['checkout.success', 'checkout.fail'])) {
+            $paymentMethod = ((int) $request->route('payment_method_id')) ?? 0;
+        } elseif ($request->has('payment_method_id')) {
+            $paymentMethod = ((int) $request->get('payment_method_id')) ?? 0;
+        }
+
+        return (int) $paymentMethod;
     }
 }
