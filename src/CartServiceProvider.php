@@ -10,6 +10,7 @@ namespace CodersStudio\Cart;
 use CodersStudio\Cart\Http\Middleware\PaymentMethodMiddleware;
 use CodersStudio\Cart\Interfaces\PaymentDriver;
 use CodersStudio\Cart\Models\PaymentMethod;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
@@ -140,19 +141,21 @@ class CartServiceProvider extends ServiceProvider
      */
     protected function checkDbForPaymentMethods()
     {
-        $dbMethods = PaymentMethod::select('name')->get();
-        $configMethods = array_keys(config('cart.drivers'));
+        if(Schema::hasTable('payment_methods')) {
+            $dbMethods = PaymentMethod::select('name')->get();
+            $configMethods = array_keys(config('cart.drivers'));
 
-        foreach ($configMethods as $configName) {
-            $searchCondition = $dbMethods->search(function ($dbMethod) use ($configName) {
-                return $dbMethod->name === $configName;
-            });
+            foreach ($configMethods as $configName) {
+                $searchCondition = $dbMethods->search(function ($dbMethod) use ($configName) {
+                    return $dbMethod->name === $configName;
+                });
 
-            if ($searchCondition === false) {
-                // not found in db
-                PaymentMethod::create([
-                    'name' => $configName
-                ]);
+                if ($searchCondition === false) {
+                    // not found in db
+                    PaymentMethod::create([
+                        'name' => $configName
+                    ]);
+                }
             }
         }
     }
