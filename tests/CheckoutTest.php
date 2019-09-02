@@ -23,6 +23,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CheckoutTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function testCheckoutSuccess()
     {
@@ -58,8 +59,6 @@ class CheckoutTest extends TestCase
 
     public function testCheckoutFail()
     {
-        $purchasedProductCount = PurchasedProduct::count();
-        $purchaseCount = Purchase::count();
         $user = factory(User::class)->create();
         $product = Product::create([
             'title' => 'ProductTest',
@@ -71,7 +70,7 @@ class CheckoutTest extends TestCase
         $session = [
             'cart' => collect([
                 "{$product->id}" => collect([
-                    'id' => 1,
+                    'id' => $product->id,
                     'price' => 555,
                     "params" => [
                         'extraFields' => []
@@ -84,8 +83,8 @@ class CheckoutTest extends TestCase
             'status' => false,
             'payment_method_id' => 1
         ]);
-        $this->assertCount($purchasedProductCount + 1, PurchasedProduct::get());
-        $this->assertCount($purchaseCount + 1, Purchase::get());
+        $this->assertCount(1, PurchasedProduct::get());
+        $this->assertCount(1, Purchase::get());
     }
 
     public function testSuccessHandler()
@@ -94,7 +93,7 @@ class CheckoutTest extends TestCase
         $user = factory(User::class)->create();
         $product = Product::create([
             'title' => 'ProductTest',
-            'user_id' => 1,
+            'user_id' => $user->id,
             'sales_count' => 0,
             'category_id' => 1,
             'price' => 777,
@@ -123,7 +122,7 @@ class CheckoutTest extends TestCase
         $user = factory(User::class)->create();
         $product = Product::create([
             'title' => 'ProductTest',
-            'user_id' => 1,
+            'user_id' => $user->id,
             'sales_count' => 0,
             'category_id' => 1,
             'price' => 777,
