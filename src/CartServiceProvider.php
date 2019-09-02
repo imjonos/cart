@@ -25,7 +25,7 @@ class CartServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'codersstudio');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
-        if(app()->runningUnitTests()) {
+        if(app()->runningUnitTests() && config('testing.packdev')) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations/test');
         }
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
