@@ -68,12 +68,12 @@ class CartTest extends TestCase
     public function testUpdate():void
     {
         Item::truncate();
-        factory(Item::class)->create();
+        $item = factory(Item::class)->create();
         $response = $this->addProduct(1);
         $response->assertStatus(204);
 
         $response = $this->put('/cart', [
-            'item_id' => 1,
+            'item_id' => $item->id,
             'quantity' => 225,
             'name' => 'new name',
             'price' => 123,
@@ -87,11 +87,11 @@ class CartTest extends TestCase
         $response->assertJson([
             'data' => [
                 [
-                    'id' => 1,
+                    'id' => $item->id,
                     'attributes' => [
                         'quantity' => 225,
                         'name' => 'new name',
-                        'price' => 1223,
+                        'price' => 123,
                         'params' => [
                             'testParam' => 777
                         ]
