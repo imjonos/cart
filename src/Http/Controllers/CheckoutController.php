@@ -66,7 +66,7 @@ class CheckoutController extends Controller
     public function successPage(Request $request)
     {
         $purchase = Purchase::find($request->get('purchase_id')) ?? null;
-        return view('checkout.success', [
+        return view('codersstudio.cart::success', [
             'purchase' => $purchase
         ]);
     }
@@ -78,7 +78,7 @@ class CheckoutController extends Controller
      */
     public function failPage()
     {
-        return view('checkout.fail');
+        return view('codersstudio.cart::fail');
     }
 
     /**
