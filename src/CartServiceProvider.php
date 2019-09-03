@@ -24,7 +24,7 @@ class CartServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'codersstudio');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'codersstudio');
         if(app()->runningUnitTests() && config('testing.packdev')) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations/test');
         }
@@ -102,9 +102,9 @@ class CartServiceProvider extends ServiceProvider
         ], 'cart.migrations');
 
         // Publishing the views.
-        /*$this->publishes([
+        $this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/codersstudio'),
-        ], 'cart.views');*/
+        ], 'cart.views');
 
         // Publishing assets.
         /*$this->publishes([
