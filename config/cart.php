@@ -1,4 +1,9 @@
 <?php
+/**
+ *  CodersStudio 2019
+ *  https://coders.studio
+ *  info@coders.studio
+ */
 
 return [
     'model' => CodersStudio\Cart\Models\Item::class, //Model of Item Element
