@@ -1,7 +1,7 @@
 {
     "name": "codersstudio/cart",
     "description": ":description",
-    "license": "license",
+    "license": "Commercial",
     "authors": [
         {
             "name": "author name",
@@ -9,7 +9,7 @@
             "homepage": "author homepage"
         }
     ],
-    "homepage": "https://github.com/codersstudio/cart",
+    "homepage": "https://gitlab.com/git.coders.studio/cart",
     "keywords": ["Laravel", "Cart"],
     "require": {
         "illuminate/support": "~5"
