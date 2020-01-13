@@ -1,3 +1,3 @@
 # Cart
 
-Shopping Cart
+Shopping Cart for Laravel
